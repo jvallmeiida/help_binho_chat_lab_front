@@ -1,86 +1,63 @@
-const products = [
-  {
-    id: 1,
-    name: 'Machined Pen',
-    color: 'Black',
-    price: '$35',
-    href: '#',
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/home-page-02-product-01.jpg',
-    imageAlt: 'Black machined steel pen with hexagonal grip and small white logo at top.',
-    availableColors: [
-      { name: 'Black', colorBg: '#111827' },
-      { name: 'Brass', colorBg: '#FDE68A' },
-      { name: 'Chrome', colorBg: '#E5E7EB' },
-    ],
-  },
-  // More products...
-]
+import { useState } from 'react';
+import QuickSearch from "./quickSearch";
 
-export default function Example() {
+function formatNumber(number) {
+  let numStr = String(number);
+  numStr = numStr.slice(0, 1) + '.' + numStr.slice(1);
+  numStr = numStr.slice(0, 5) + ',' + numStr.slice(5);
+  return numStr;
+}
+
+export default function ProductList({ products }) {
+  const [searchValue, setSearchValue] = useState('');
+  const [filteredProducts, setFilteredProducts] = useState(products);
+
+  const handleSearch = (searchTerm) => {
+    const filtered = products.filter(product =>
+      product.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredProducts(filtered);
+  };
+
   return (
     <div className="bg-white">
-      <div className="py-16 sm:py-24 lg:mx-auto lg:max-w-7xl lg:px-8">
-        <div className="flex items-center justify-between px-4 sm:px-6 lg:px-0">
-          <h2 className="text-2xl font-bold tracking-tight text-gray-900">Trending products</h2>
-          <a href="#" className="hidden text-sm font-semibold text-indigo-600 hover:text-indigo-500 sm:block">
-            See everything
-            <span aria-hidden="true"> &rarr;</span>
-          </a>
-        </div>
-
-        <div className="relative mt-8">
-          <div className="relative -mb-6 w-full overflow-x-auto pb-6">
-            <ul
-              role="list"
-              className="mx-4 inline-flex space-x-8 sm:mx-6 lg:mx-0 lg:grid lg:grid-cols-4 lg:gap-x-8 lg:space-x-0"
-            >
-              {products.map((product) => (
-                <li key={product.id} className="inline-flex w-64 flex-col text-center lg:w-auto">
-                  <div className="group relative">
-                    <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200">
-                      <img
-                        src={product.imageSrc}
-                        alt={product.imageAlt}
-                        className="h-full w-full object-cover object-center group-hover:opacity-75"
-                      />
-                    </div>
-                    <div className="mt-6">
-                      <p className="text-sm text-gray-500">{product.color}</p>
-                      <h3 className="mt-1 font-semibold text-gray-900">
-                        <a href={product.href}>
-                          <span className="absolute inset-0" />
-                          {product.name}
-                        </a>
-                      </h3>
-                      <p className="mt-1 text-gray-900">{product.price}</p>
-                    </div>
-                  </div>
-
-                  <h4 className="sr-only">Available colors</h4>
-                  <ul role="list" className="mt-auto flex items-center justify-center space-x-3 pt-6">
-                    {product.availableColors.map((color) => (
-                      <li
-                        key={color.name}
-                        className="h-4 w-4 rounded-full border border-black border-opacity-10"
-                        style={{ backgroundColor: color.colorBg }}
-                      >
-                        <span className="sr-only">{color.name}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-
-        <div className="mt-12 flex px-4 sm:hidden">
-          <a href="#" className="text-sm font-semibold text-indigo-600 hover:text-indigo-500">
-            See everything
-            <span aria-hidden="true"> &rarr;</span>
-          </a>
+      <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
+        <h2 className="text-xl font-bold text-gray-900">Pesquisar Produtos</h2>
+        <QuickSearch onSearch={handleSearch} />
+        <div className="mt-8 grid grid-cols-1 gap-y-12 sm:grid-cols-2 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8">
+          {filteredProducts.map((product) => (
+            <div key={product.id}>
+              <div className="relative">
+                <div className="relative h-72 w-full overflow-hidden rounded-lg">
+                  <img
+                    src={product.variations[0].imageUrl}
+                    alt={product.imageAlt}
+                    className="h-full w-full object-cover object-center"
+                  />
+                </div>
+                <div className="relative mt-4">
+                  <h3 className="text-sm font-medium text-gray-900">{product.name}</h3>
+                </div>
+                <div className="absolute inset-x-0 top-0 flex h-72 items-end justify-end overflow-hidden rounded-lg p-4">
+                  <div
+                    aria-hidden="true"
+                    className="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-black opacity-50"
+                  />
+                  <p className="relative text-lg font-semibold text-white">Menor preço: R$ {formatNumber(product.prices[0].min)}</p>
+                </div>
+              </div>
+              <div className="mt-6">
+                <a
+                  href={product.href}
+                  className="relative flex items-center justify-center rounded-md border border-transparent bg-gray-100 px-8 py-2 text-sm font-medium text-gray-900 hover:bg-gray-200"
+                >
+                  Ver Variações de Produto<span className="sr-only"></span>
+                </a>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>
-  )
+  );
 }
