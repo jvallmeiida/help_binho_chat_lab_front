@@ -64,7 +64,7 @@ export default function ProductList() {
                     aria-hidden="true"
                     className="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-black opacity-50"
                   />
-                  <p className="relative text-lg font-semibold text-white">Menor preço: R$ {formatNumber(product.prices[0]?.min)}</p>
+                  <p className="relative text-lg font-semibold text-white">Menor preço: R$ {formatNumber(product?.prices?.min)}</p>
                 </div>
               </div>
               <div className="mt-6">
