@@ -15,6 +15,7 @@ import { Dialog, Disclosure, Popover, RadioGroup, Tab, Transition } from '@headl
 import { ChevronRightIcon } from '@heroicons/react/24/outline';
 import axios from 'axios';
 
+
 function formatNumber(number) {
   let numStr = String(number);
   numStr = numStr.slice(0, 1) + '.' + numStr.slice(1);
@@ -88,7 +89,8 @@ export default function ProductDetails() {
 
               <div className="mt-3">
                 <h2 className="sr-only">Product information</h2>
-                <p className="text-3xl tracking-tight text-gray-900">R$ {formatNumber(product?.prices[0].min)}</p>
+                {console.log('aaa', product)}
+                <p className="text-3xl tracking-tight text-gray-900">R$ {formatNumber(product?.prices?.min)}</p>
               </div>
               <div className="mt-6">
                 <h3 className="sr-only">Description</h3>
@@ -103,17 +105,17 @@ export default function ProductDetails() {
                 <div className="w-1/3 bg-gray-100 p-4 rounded-md">
                   <h3 className="text-sm font-medium text-gray-700">Preço Médio</h3>
                   {console.log(product)}
-                  <p className="text-lg font-semibold text-gray-900">R$ {formatNumber(product?.prices[0].med)}</p>
+                  <p className="text-lg font-semibold text-gray-900">R$ {formatNumber(product?.prices?.med)}</p>
                   
                 </div>
                 <div className="w-1/3 bg-gray-100 p-4 rounded-md">
                   <h3 className="text-sm font-medium text-gray-700">Preço Mínimo</h3>
-                  <p className="text-lg font-semibold text-gray-900">R$ {formatNumber(product?.prices[0].min)}</p>
+                  <p className="text-lg font-semibold text-gray-900">R$ {formatNumber(product?.prices?.min)}</p>
                   
                 </div>
                 <div className="w-1/3 bg-gray-100 p-4 rounded-md">
                   <h3 className="text-sm font-medium text-gray-700">Preço Máximo</h3>
-                  <p className="text-lg font-semibold text-gray-900">R$ {formatNumber(product?.prices[0].max)}</p>
+                  <p className="text-lg font-semibold text-gray-900">R$ {formatNumber(product?.prices?.max)}</p>
                   {/* <Link to={`/loja/Amazon`} className="text-blue-500 hover:underline">Amazon</Link> */}
                 </div>
               </div>
@@ -174,16 +176,7 @@ export default function ProductDetails() {
                       <p className="relative text-lg font-semibold text-white">{product.price}</p>
                     </div>
                   </div>
-                  <div className="mt-6">
-                    {/* <a
-                      href={product.href}
-                      className="relative flex items-center justify-center rounded-md border border-transparent bg-gray-100 px-8 py-2 text-sm font-medium text-gray-900 hover:bg-gray-200"
-                    >
-                      Add to bag<span className="sr-only">, {product.name}</span>
-                    </a> */}
-
-                    
-                  </div>
+                  
                 </div>
               ))}
             </div>
