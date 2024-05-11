@@ -1,9 +1,10 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Chart from 'chart.js/auto';
 
-const LineChart = ({ data }) => {
+const LineChart = ({ data, selectDate }) => {
   const chartRef = useRef(null);
   const chartInstance = useRef(null); 
+  const [selectedRange, setSelectedRange] = useState('full'); // Estado para acompanhar a seleção do usuário
 
   useEffect(() => {
     if (chartRef && chartRef.current) {
@@ -15,12 +16,12 @@ const LineChart = ({ data }) => {
       chartInstance.current = new Chart(ctx, {
         type: 'line',
         data: {
-          labels: data?.map((_, index) => index),
+          labels: selectedRange === 'full' ? data?.map((_, index) => index) : data?.slice(-selectedRange), // Determina os rótulos com base na seleção do usuário
           datasets: [
             {
-              label: 'Meu Gráfico',
-              data: data,
-              fill: false,
+              label: 'Variação de preços',
+              data: selectedRange === 'full' ? data : data?.slice(-selectedRange), // Determina os dados com base na seleção do usuário
+              fill: true,
               borderColor: 'rgb(75, 192, 192)',
               tension: 0.1,
             },
@@ -35,9 +36,26 @@ const LineChart = ({ data }) => {
         },
       });
     }
-  }, [data]);
+  }, [data, selectedRange]); 
 
-  return <canvas ref={chartRef} />;
+  const handleChange = (e) => {
+    setSelectedRange(e.target.value);
+  };
+
+  return (
+    <div className='mt-8'>
+      <canvas ref={chartRef} />
+      {selectDate &&
+        <div className="ml-5">
+        Selecione o intervalo:
+        <select value={selectedRange} onChange={handleChange}>
+          <option value="1">Último dia</option>
+          <option value="3">Últimos 3 dias</option>
+          <option value="full">Histórico completo</option>
+        </select>
+      </div>}   
+    </div>
+  );
 };
 
 export default LineChart;

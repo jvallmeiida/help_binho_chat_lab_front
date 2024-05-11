@@ -28,7 +28,7 @@ export default function ProductList() {
   }, []);
 
   const handleClick = (id) => {
-    window.location.href = `/produto/${id}`;
+    window.location.href = `/produto/${id}/variations/1`;
   };
 
   const handleSearch = (searchTerm) => {
