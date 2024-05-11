@@ -12,8 +12,8 @@ function QuickSearch({ onSearch }) {
   };
 
   return (
-    <div>
-      <div className="mt-3">
+    <div className="flex md-8">
+      <div className="mt-3 flex-grow">
         <input
           type="text"
           name="search"
@@ -23,7 +23,7 @@ function QuickSearch({ onSearch }) {
           value={searchTerm}
         />
       </div>
-      <div className="mt-3">
+      <div className="mt-3 ml-2">
         <button
           className="bg-gray-800 text-white py-2 px-4 rounded-md"
           onClick={handleSearchClick}
