@@ -181,6 +181,8 @@ export default function ProductDetails() {
                     >
                       Add to bag<span className="sr-only">, {product.name}</span>
                     </a> */}
+
+                    
                   </div>
                 </div>
               ))}
