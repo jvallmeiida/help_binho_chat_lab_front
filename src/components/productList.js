@@ -1,5 +1,6 @@
-import { useState } from 'react';
 import QuickSearch from "./quickSearch";
+import axios from 'axios';
+import { useState, useEffect } from 'react';
 
 function formatNumber(number) {
   let numStr = String(number);
@@ -8,9 +9,27 @@ function formatNumber(number) {
   return numStr;
 }
 
-export default function ProductList({ products }) {
-  const [searchValue, setSearchValue] = useState('');
-  const [filteredProducts, setFilteredProducts] = useState(products);
+export default function ProductList() {
+  const [products, setProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
+
+  useEffect(() => {
+    setFilteredProducts(products);
+  }, [products]);
+
+  useEffect(() => {
+    axios.get('http://localhost:3000/api/v1/products')
+      .then(response => {
+        setProducts(response.data);
+      })
+      .catch(error => {
+        console.error('Erro ao obter produtos:', error);
+      });
+  }, []);
+
+  const handleClick = (id) => {
+    window.location.href = `/produto/${id}`;
+  };
 
   const handleSearch = (searchTerm) => {
     const filtered = products.filter(product =>
@@ -25,11 +44,12 @@ export default function ProductList({ products }) {
         <h2 className="text-xl font-bold text-gray-900">Pesquisar Produtos</h2>
         <QuickSearch onSearch={handleSearch} />
         <div className="mt-8 grid grid-cols-1 gap-y-12 sm:grid-cols-2 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8">
-          {filteredProducts.map((product) => (
+          {(filteredProducts).map((product) => (
             <div key={product.id}>
               <div className="relative">
                 <div className="relative h-72 w-full overflow-hidden rounded-lg">
                   <img
+                    onClick={() => handleClick(product.id)}
                     src={product.variations[0].imageUrl}
                     alt={product.imageAlt}
                     className="h-full w-full object-cover object-center"
@@ -47,12 +67,13 @@ export default function ProductList({ products }) {
                 </div>
               </div>
               <div className="mt-6">
-                <a
-                  href={product.href}
+                <button
+                  onClick={() => handleClick(product.id)}
                   className="relative flex items-center justify-center rounded-md border border-transparent bg-gray-100 px-8 py-2 text-sm font-medium text-gray-900 hover:bg-gray-200"
                 >
-                  Ver Variações de Produto<span className="sr-only"></span>
-                </a>
+                  Ver Variações do Produto
+                  <span className="sr-only"></span>
+                </button>
               </div>
             </div>
           ))}

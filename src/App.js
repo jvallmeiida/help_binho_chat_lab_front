@@ -1,24 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import ProductList from './components/productList';
+import ProductDetails from './components/productDetails';
 
 function App() {
-  const [products, setProducts] = useState([]);
-
-  useEffect(() => {
-    axios.get('http://localhost:3000/api/v1/products')
-      .then(response => {
-        setProducts(response.data);
-      })
-      .catch(error => {
-        console.error('Erro ao obter produtos:', error);
-      });
-  }, []);
-
   return (
-    <div>
-      <ProductList products={products} />
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<ProductList />} />
+        <Route path="/produto/:id" element={<ProductDetails />} />
+      </Routes>
+    </Router>
   );
 }
 
