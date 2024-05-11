@@ -1,21 +1,10 @@
-
-import {
-  Bars3Icon,
-  HeartIcon,
-  MagnifyingGlassIcon,
-  MinusIcon,
-  PlusIcon,
-  ShoppingBagIcon,
-  UserIcon,
-  XMarkIcon,
-} from '@heroicons/react/24/outline'
-import { Fragment, useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, useParams } from 'react-router-dom';
-import { Dialog, Disclosure, Popover, RadioGroup, Tab, Transition } from '@headlessui/react'
+import { Tab } from '@headlessui/react'
 import { ChevronRightIcon } from '@heroicons/react/24/outline';
 import axios from 'axios';
 import Linechart from './lineChart'
-import { ChevronLeftIcon } from '@heroicons/react/24/outline';
+import { ChevronLeftIcon, StarIcon } from '@heroicons/react/24/outline';
 
 
 function formatNumber(number) {
@@ -62,13 +51,13 @@ export default function ProductDetails() {
   return (
     <div className="bg-white">
       <main className="mx-auto max-w-7xl sm:px-6 sm:pt-16 lg:px-8">
-        <div className="mx-auto max-w-2xl lg:max-w-none">
-        <div className="mb-4">
+      <div className="mb-4">
           <Link to="/" className="flex items-center text-gray-500 hover:text-gray-700">
             <ChevronLeftIcon className="h-5 w-5 mr-1" />
             Voltar ao Menu Inicial
           </Link>
         </div>
+        <div className="mx-auto max-w-2xl lg:max-w-none">
           <div className="lg:grid lg:grid-cols-2 lg:items-start lg:gap-x-8">
             {/* Image gallery */}
             <Tab.Group as="div" className="flex flex-col-reverse">
@@ -85,9 +74,16 @@ export default function ProductDetails() {
             {/* Product info */}
             <div className="mt-10 px-4 sm:mt-16 sm:px-0 lg:mt-0">
               <h1 className="text-3xl font-bold tracking-tight text-gray-900">{variationMain?.name}</h1>
+              <div className="mt-10 px-4 sm:mt-16 sm:px-0 lg:mt-0">
+                <h1 className="text-3xl font-bold tracking-tight text-gray-900 flex items-center">
+                  {product?.name}
+                  <StarIcon className="h-6 w-6 ml-2 text-yellow-400" />
+                  <span className="ml-2 text-gray-600">{variationMain?.rating ? variationMain?.rating + ".0" : "0.0"}</span>
+                </h1>
 
-              <div className="mt-3">
-                <p className="text-3xl tracking-tight text-gray-900">R$ {formatNumber(variationMain?.price)}</p>
+                <div className="mt-3">
+                  <p className="text-3xl tracking-tight text-gray-900">R$ {formatNumber(variationMain?.price)}</p>
+                </div>
               </div>
               <div className="mt-6">
                 <div
@@ -117,7 +113,7 @@ export default function ProductDetails() {
               <section aria-labelledby="details-heading" className="mt-12">
               <div className="divide-y divide-gray-200 border-t">
                 {product?.variations?.map((variation) => (
-                  <div className="justify-between" key={variation.name}>
+                  <div className="justify-between" key={variation?.name}>
                     <h3>
                       <button
                         onClick={() => window.open(variation?.sellerUrl, '_blank')}
