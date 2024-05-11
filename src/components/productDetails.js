@@ -22,7 +22,7 @@ export default function ProductDetails() {
   useEffect(() => {
     const fetchProductData = async () => {
       try {
-        const response = await axios.get(`${process.env.API_URL}/products/${productId}`);
+        const response = await axios.get(`http://localhost:3000/api/v1/products/${productId}`);
 
         setProduct(response.data);        
       } catch (error) {
@@ -36,7 +36,7 @@ export default function ProductDetails() {
   useEffect(() => {
     const fetchVariationData = async () => {
       try {
-        const response = await axios.get(`${process.env.API_URL}/products/${productId}/variations/${variationId}`);
+        const response = await axios.get(`http://localhost:3000/api/v1/products/${productId}/variations/${variationId}`);
         setVariationMain(response.data);  
         
         console.log(variationMain)

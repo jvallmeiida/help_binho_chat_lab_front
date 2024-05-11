@@ -18,7 +18,7 @@ export default function ProductList() {
   }, [products]);
 
   useEffect(() => {
-    axios.get(`${process.env.API_URL}/products`)
+    axios.get(`http://localhost:3000/api/v1/products`)
       .then(response => {
         setProducts(response.data);
       })
